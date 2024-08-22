@@ -15,6 +15,15 @@ import pystray, pymsgbox
 from PIL import Image
 from functools import partial
 
+def on_open_folder_clicked( stray_icon, item):
+    global working_folder
+    if sys.platform == 'win32':
+        os.startfile( working_folder)
+    elif sys.platform == 'darwin':
+        subprocess.call(('open', working_folder))
+    elif sys.platform.startswith == 'linux':
+        subprocess.call(('xdg-open', working_folder))
+
 def on_exit_clicked( stray_icon, item):
     stray_icon.stop()
 
@@ -58,6 +67,7 @@ except Exception as e:
     exit( 1)
 
 item_list.append( pystray.Menu.SEPARATOR)
+item_list.append( pystray.MenuItem( 'Open Folder ...', on_open_folder_clicked))
 item_list.append( pystray.MenuItem( 'Exit', on_exit_clicked))
 
 menu = pystray.Menu( *item_list)
